@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { CategoriesService } from '../services/categories.service';
 
 @Component({
   selector: 'app-categories',
@@ -8,38 +7,41 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
   styleUrl: './categories.component.css',
 })
 export class CategoriesComponent {
-  constructor(private asf: AngularFirestore) {}
+  constructor(private categoryService: CategoriesService) {}
 
   onSubmit(formData: { value: { category: any } }) {
     let categoryData = {
       category: formData.value.category,
       status: 'active',
     };
-    let subCategoryData = {
-      subCategory: 'subCategory1',
-    };
+
+    this.categoryService.saveData(categoryData);
+
+    // let subCategoryData = {
+    //   subCategory: 'subCategory1',
+    // };
 
     // save data in firebase
-    this.asf
-      .collection('categories')
-      .add(categoryData)
-      .then((docref) => {
-        this.asf
-          .doc(`categories/${docref.id}`)
-          .collection('subcategories')
-          .add(subCategoryData)
-          .then((docref1) => {
-            console.log(docref1);
+    // this.asf
+    //   .collection('categories')
+    //   .add(categoryData)
+    //   .then((docref) => {
+    //     this.asf
+    //       .doc(`categories/${docref.id}`)
+    //       .collection('subcategories')
+    //       .add(subCategoryData)
+    //       .then((docref1) => {
+    //         console.log(docref1);
 
-            this.asf
-              .doc(`categories/${docref.id}/subcategories/${docref.id}`)
-              .collection('subsubcategories')
-              .add(subCategoryData)
-              .then((docRef2) => {
-                console.log(docRef2);
-              });
-          });
-      })
-      .catch((err) => {});
+    //         this.asf
+    //           .doc(`categories/${docref.id}/subcategories/${docref.id}`)
+    //           .collection('subsubcategories')
+    //           .add(subCategoryData)
+    //           .then((docRef2) => {
+    //             console.log(docRef2);
+    //           });
+    //       });
+    //   })
+    //   .catch((err) => {});
   }
 }
