@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CategoriesService } from '../services/categories.service';
 import { Category } from '../models/category';
 
@@ -7,21 +7,42 @@ import { Category } from '../models/category';
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.css',
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements OnInit {
+  categoryArray: Array<object> | any;
+  formCategory: string;
+  formStatus: string = 'Add';
+  categoryId: string;
+
   constructor(private categoryService: CategoriesService) {}
 
-  onSubmit(formData: { value: { category: any } }) {
+  ngOnInit(): void {
+    this.categoryService.loadData().subscribe((val) => {
+      this.categoryArray = val;
+    });
+  }
+
+  onSubmit(formData: any) {
     let categoryData: Category = {
       category: formData.value.category,
     };
 
+    if (this.formStatus == 'Add') {
+      this.categoryService.saveData(categoryData);
+      formData.reset();
+    } else if (this.formStatus == 'Edit') {
+      this.categoryService.updateData(this.categoryId, categoryData);
+      formData.reset();
+      this.formStatus = 'Add';
+    }
+
     this.categoryService.saveData(categoryData);
 
+    formData.reset();
     // let subCategoryData = {
     //   subCategory: 'subCategory1',
     // };
 
-    // save data in firebase
+    // save data in firebase with subcategories
     // this.asf
     //   .collection('categories')
     //   .add(categoryData)
@@ -43,5 +64,15 @@ export class CategoriesComponent {
     //       });
     //   })
     //   .catch((err) => {});
+  }
+
+  onEdit(category: any, id: any) {
+    this.formCategory = category;
+    this.formStatus = 'Edit';
+    this.categoryId = id;
+  }
+
+  onDelete(id: any) {
+    this.categoryService.deleteData(id);
   }
 }
