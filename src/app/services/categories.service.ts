@@ -35,7 +35,7 @@ export class CategoriesService {
   }
 
   async updateData(id: any, EditData: any) {
-    (await this.asf.collection('categories').add(id))
+    (await this.asf.collection('categories').add(`categories/${id}`))
       .update(EditData)
       .then((docRef) => {
         this.toastr.success('Data Updated Successfully!');
@@ -43,8 +43,12 @@ export class CategoriesService {
   }
 
   deleteData(id: any) {
-    this.asf.collection('categories').doc(id).delete().then(docRef => {
-      this.toastr.success("Data deleted successfully.");
-    })
+    this.asf
+      .collection('categories')
+      .doc(`categories/${id}`)
+      .delete()
+      .then((docRef) => {
+        this.toastr.success('Data deleted successfully.');
+      });
   }
 }
