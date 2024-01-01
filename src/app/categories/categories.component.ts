@@ -24,19 +24,15 @@ export class CategoriesComponent {
       .collection('categories')
       .add(categoryData)
       .then((docref) => {
-        console.log(docref);
         this.asf
-          .collection('categories')
-          .doc(docref.id)
+          .doc(`categories/${docref.id}`)
           .collection('subcategories')
           .add(subCategoryData)
           .then((docref1) => {
             console.log(docref1);
+
             this.asf
-              .collection('categories')
-              .doc(docref.id)
-              .collection('subcategories')
-              .doc(docref.id)
+              .doc(`categories/${docref.id}/subcategories/${docref.id}`)
               .collection('subsubcategories')
               .add(subCategoryData)
               .then((docRef2) => {
