@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoriesService } from '../../services/categories.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-new-post',
@@ -13,7 +14,18 @@ export class NewPostComponent implements OnInit {
 
   categories: Array<object>;
 
-  constructor(private category: CategoriesService) {}
+  postForm: FormGroup;
+
+  constructor(private category: CategoriesService, private fb: FormBuilder) {
+    this.postForm = this.fb.group({
+      title: [''],
+      permalink: [''],
+      excerpt: [''],
+      category: [''],
+      postImg: [''],
+      content: [''],
+    });
+  }
 
   ngOnInit(): void {
     this.category.loadData().subscribe((val: any) => {

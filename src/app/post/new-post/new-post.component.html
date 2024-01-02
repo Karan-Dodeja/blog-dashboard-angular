@@ -5,23 +5,22 @@
             <p class="mb-5">You can add your new post here</p>
         </div>
     </div>
-    <form action="
-    ">
+    <form [formGroup]="postForm">
         <div class="row">
             <div class="col-md-7">
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
                             <label for="">Title</label>
-                            <input type="text" name="" id="" class="form-control" (keyup)="onTitleChange($event)">
+                            <input type="text" name="" id="" class="form-control" (keyup)="onTitleChange($event)" formControlName="title">
                         </div>
                         <div class="form-group">
                             <label for="">Permalink</label>
-                            <input type="text" name="permalink" id="" class="form-control" [(ngModel)]="permalink">
+                            <input type="text" name="permalink" id="" class="form-control" [(ngModel)]="permalink" formControlName="permalink">
                         </div>
                         <div class="form-group">
                             <label for="">Excerpt</label>
-                            <textarea cols="30" rows="10" class="form-control"></textarea>
+                            <textarea cols="30" rows="10" class="form-control" formControlName="excerpt"></textarea>
                         </div>
                     </div>
                 </div>
@@ -30,16 +29,16 @@
 
                 <div class="form-group">
                     <label for="">Select a post category</label>
-                    <select name="" id="" class="form-control">
+                    <select name="" id="" class="form-control" formControlName="category">
                         <option value="" disabled>Please select a category</option>
-                        <!-- <option *ngFor="let category of categories" value="">{{ category.data.category }}</option> -->
+                        <!-- <option *ngFor="let category of categories" value=""> {{ category.data.category }} </option> -->
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label class="label">Post Image</label>
-                    <img [src]="imgSrc" class="form-control img-fluid img-preview">
-                    <input type="file" class="form-control" accept="image/*" (change)="showPreview($event)">
+                    <img [src]="imgSrc" class="form-control img-fluid img-preview" >
+                    <input type="file" formControlName="postImg" class="form-control" accept="image/*" (change)="showPreview($event)">
                 </div>
 
             </div>
@@ -50,7 +49,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="" class="">Content</label>
-                            <angular-editor placeholder="Add you content here"></angular-editor>
+                            <angular-editor placeholder="Add you content here" formControlName="content"></angular-editor>
                         </div>
                     </div>
                 </div>
